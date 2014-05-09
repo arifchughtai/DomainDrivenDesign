@@ -1,10 +1,236 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Hallo Folien}
-Hallo äöüß
+\begin{frame}{}
+Foto: Dunkle Regenwolken oder so
 \end{frame}
-\begin{frame}{Hallo Folien}
-Jens was here
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Hallo
+\item[J] Hi, na wie geht's?
+\item[N] Uh, nicht so prima. Wir haben grad ziemlich viel Stress auf der Arbeit. Unsere neue Applikation wird kräftig entwickelt, aber irgendwie wird alles immer mühsamer... Guck mal hier:
+\end{description}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Unsere aktuelle Architektur}
+Klassisches 3-Schichten-Modell
+
 \end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] So sieht's gerade bei uns aus. Ganz normal, oder? UI-Layer, Business-Layer und Datenbank-Layer.
+Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Schichten verschmiert ist. Guck mal hier:
+\end{description}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Unsere aktuelle Architektur}
+<Einblendung KundenEditUI, KundenEditModel, KundenBS, KundenPS, KundenDAO, KundenVO, KundenDTO>
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Schwierig, Tests zu schreiben / Technik auch / Auftraggeber versteht nur Bahnhof / wirft alle Abkürzungen durcheinander / alles ist aufgesplittert / Missverständnisse selbst bei Entwicklern / Jede Menge Impls und Managers
+\item[J] Ja, das kenn ich gut. Wir waren auch mal in so einer Abkürzungs-Hölle.
+\item[N] Waren? Das heißt, Ihr seid da rausgekommen? Und es gibt noch Hoffnung?
+\item[J] Naja, geschenkt bekommen haben wir das natürlich auch nicht. Das war schon ganz schön Arbeit.
+\item[N] Egal! Wie habt Ihr das gemacht, sag schon!
+\end{description}
+}
+\note{
+\begin{description}
+\item[J] Naja, ... wir machen jetzt Domain-Driven Design.
+\item[N] Hm, ich glaub davon hab ich schon gehört... DDD ... noch ne Abkürzung - nee, das hilft doch nicht weiter.
+\item[J] Na, wart's mal ab, ich erzähl Dir einfach mal ein bisschen davon, ok?
+\item[N] Na also gut... schlimmer kann's ja nicht mehr werden.
+\end{description}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Domain-Driven Design}
+\begin{itemize}
+\item versucht die Brücke zu schlagen zwischen Domänen-Experten und Entwicklern
+\item fokussiert die Entwicklung auf die Fachlichkeit
+\item gibt Entwicklern Bausteine und Werkzeuge in die Hand, um gute Anwendungen zu schreiben
+\end{itemize}
+
+% Kürzen?
+%\begin{itemize}
+%\item Domänen-Experten und Entwickler gemeinsam
+%\item Fokus der Entwicklung auf die Fachlichkeit
+%\item Bausteine und Werkzeuge für gute Anwendungen
+%\end{itemize}
+
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[J] stellt die Punkte vor
+\item[N] Das klingt ja sehr interessant! Aber ist das jetzt nicht wieder so ein neuer Hype?
+\item[J] Nein - Teile schon Jahrzehnte alt
+\item[J] DAS Buch ist über 10 Jahre alt
+\item[N] OK. Aber bist Du wirklich sicher, dass das auch für uns passt?
+\item[J] DDD ist besonders geeignet, wenn Fachlichkeit Kern der Anwendung / Abgegrenzte Domäne
+\item[N] Das ist bei uns der Fall. Dann erzähl doch einfach mal weiter!
+\end{description}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Baustein: Entitäten}
+\begin{itemize}
+\item x
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] x
+\item[J] x
+\end{description}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Baustein: Value Objects}
+\begin{itemize}
+\item Werte
+\item Identität ist irrelevant
+\item Fachliche Wrapper um technische Datentypen
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[J] Value Objects wendet man da an, wo man Werte repräsentieren will. Und wo die Identität keine Rolle spielt, also wo ich ein Value Objekt durch ein anderes identisches ersetzen kann.
+\item[N] Also Du meinst Strings und ints und sowas?
+\item[J] Im Prinzip schon. Aber die haben keine fachliche Semantik: Was bedeutet dieser Double, welche Werte sind hier gültig?
+\item[N] Oh ja, das kenne ich. Wir haben eine Methode mit 10 Parametern, alles Doubles. Der häufigste Bug an der Stelle ist, dass irgendjemand mal wieder die Werte in die falschen Parameter gesteckt hat...
+\end{description}
+}
+\note{
+\begin{description}
+\item[J] Und deswegen ist es sinnvoll, fachliche Wrapper-Klassen zu erstellen, die die Semantik ausdrücken. Simple Beispiele sind Geldbetrag oder Prozentsatz.
+
+\item[N] Mensch, danke für die vielen Infos! Jetzt bin ich mal gespannt, wie wir das Ganze bei uns im Team umsetzen können. Tschüs, ich muss los!
+\end{description}
+Gehen ab.
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Einige Wochen später...}
+\begin{itemize}
+\item x
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[J] Hallo, schön Dich wiederzusehen! Wie läuft's denn so mit Domain-Driven Design?
+\item[N] Oh, sehr gut! Wir haben inzwischen einige unserer Probleme in den Griff bekommen und auch coole neue Sachen entdeckt.
+\item[J] Das ist ja schön zu hören! Magst Du mir was davon erzählen?
+\end{description}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Neues über Value Objects}
+\begin{itemize}
+\item x
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] erläutert ihre Entdeckungen
+\begin{itemize}
+\item komplexe Value Objects, nicht nur simple Wrapper. Beispiel: Adresse
+\item Validierungen möglich
+\end{itemize}
+\item[J] x
+%%
+\item[N] Aber es knirscht auch noch ganz schön an vielen Stellen.
+\item[J] Wo denn zum Beispiel?
+\item[N] 
+\end{description}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Die allgegenwärtige Sprache}
+\begin{itemize}
+\item x
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[J] Du hast ja selbst schon festgestellt, wie wichtig und schwierig die Sprache ist.
+\item[N] x
+\item[J] x
+\end{description}
+}
+
+% Hier geht's weiter...
+
+% FAZIT:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Achtung!}
+\begin{itemize}
+\item Technisches nicht hinten runterfallen lassen
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] x
+\item[J] x
+\end{description}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Was man beherzigen darf}
+\begin{itemize}
+\item x
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] x
+\item[J] x
+\end{description}
+}
+
+
+
+% TEMPLATE:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{x}
+\begin{itemize}
+\item x
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] x
+\item[J] x
+\end{description}
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
