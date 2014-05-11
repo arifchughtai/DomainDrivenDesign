@@ -82,26 +82,46 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Baustein: Entitäten}
+\begin{frame}{Baustein: Entität}
 \begin{itemize}
-\item x
+\item hat eine Identität (beschreibt das \glqq{}wer\grqq{})
+\item hat einen Lebenszyklus
+\item Modellierung fokussiert darauf
+\item eindeutigen Identifikator festlegen
 \end{itemize}
 \end{frame}
 
 %%%%%%
 \note{
 \begin{description}
-\item[N] x
-\item[J] x
+\item[J] Identität gilt oft auch außerhalb der gerade betrachteten Software
+\item[N] Ja, das kenne ich, wir modellieren Kunden, die haben natürlich auch im echten Leben einen Namen und ein Geburtsdatum
+\item[J] Innerhalb des Lebenszyklus können sich Werte der Entität ändern
+\item[N] Ja, das macht immer am meisten Stress, wenn die Kunden umziehen oder heiraten. Nicht so einfach, damit umzugehen...
+\item[J] Genau, deswegen ist es wichtig, einen eindeutigen Identifikator festzulegen. Es könnten ja auch mal zwei Kunden denselben Namen haben.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Du meinst zum Beispiel die Objektidentität?
+\item[J] Nein, da sollte man schon selbst etwas implementieren, Objektidentität passt meistens nicht genau. Insbesondere wenn man mit einer Datenbank arbeitet und immer wieder neue Instanzen einer Entität bekommt.
+\item[N] Aber grundsätzlich ist es schon so, dass meine derzeitigen Datenbankobjekte alles Entitäten sind, oder? Dann verstehe ich noch nicht, was jetzt das Großartige und Neue sein soll...
+\item[J] Nur Geduld! Ich vermute nämlich, dass nicht alle Deiner derzeitigen Datenbankobjekte Entitäten sind. Es gibt ja auch noch Value Objects.
 \end{description}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Baustein: Value Objects}
+\begin{frame}{Baustein: Value Object}
 \begin{itemize}
-\item Werte
-\item Identität ist irrelevant
-\item Fachliche Wrapper um technische Datentypen
+\item Wert
+\item hat keine Identität (beschreibt \glqq{}was\grqq{}, nicht \glqq{}wer\grqq{})
+\item Fachlicher Wrapper um technische Datentypen
+\item bildet eine konzeptionelle Einheit
+\item kann oft als Immutable implementiert werden
+\begin{itemize}
+\item dann ist Sharing möglich
+\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -111,12 +131,22 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 \item[J] Value Objects wendet man da an, wo man Werte repräsentieren will. Und wo die Identität keine Rolle spielt, also wo ich ein Value Objekt durch ein anderes identisches ersetzen kann.
 \item[N] Also Du meinst Strings und ints und sowas?
 \item[J] Im Prinzip schon. Aber die haben keine fachliche Semantik: Was bedeutet dieser Double, welche Werte sind hier gültig?
-\item[N] Oh ja, das kenne ich. Wir haben eine Methode mit 10 Parametern, alles Doubles. Der häufigste Bug an der Stelle ist, dass irgendjemand mal wieder die Werte in die falschen Parameter gesteckt hat...
+\item[N] Oh ja, das kenne ich. Wir haben eine Methode mit 10 Parametern, alles Doubles. Der häufigste Bug an der Stelle ist, dass irgendjemand mal wieder die Werte in der falschen Reihenfolge übergeben hat...
 \end{description}
 }
 \note{
 \begin{description}
 \item[J] Und deswegen ist es sinnvoll, fachliche Wrapper-Klassen zu erstellen, die die Semantik ausdrücken. Simple Beispiele sind Geldbetrag oder Prozentsatz.
+Interessant dabei ist, dass man Value Objects oft als immutable implementieren kann, d.~h.~dass man das Objekt nach der Erzeugung nicht mehr verändern kann.
+\item[N] Hm, aber was ist, wenn sich jetzt was ändert, zum Beispiel die Gesamtsumme in meinem Warenkorb?
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Da kann ich einfach einen neuen Geldbetrag mit der neuen Gesamtsumme bauen und den alten dadurch ersetzen. Und die Implementierung meines Value Objects wird dadurch viel einfacher. Man kann sogar häufig vorkommende Value Objects wiederverwenden - das ist ungefährlich, denn sie können ja nicht verändert werden.
+\item[N] Ah, klingt interessant! Wir haben ganz oft einen Preis von 99 Cent, da könnte ich dann immer dasselbe Value Object verwenden, oder?
+\item[J] Ja, zum Beispiel.
 
 \item[N] Mensch, danke für die vielen Infos! Jetzt bin ich mal gespannt, wie wir das Ganze bei uns im Team umsetzen können. Tschüs, ich muss los!
 \end{description}
@@ -125,9 +155,7 @@ Gehen ab.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Einige Wochen später...}
-\begin{itemize}
-\item x
-\end{itemize}
+Bild mit schönem Wetter
 \end{frame}
 
 %%%%%%
@@ -142,21 +170,39 @@ Gehen ab.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Neues über Value Objects}
 \begin{itemize}
-\item x
+\item aus Entitäten auslagern
+\item können auch komplexer aufgebaut sein
+\item entwickeln sich zu \glqq{}Code-Magneten\grqq{}
 \end{itemize}
 \end{frame}
 
 %%%%%%
 \note{
 \begin{description}
-\item[N] erläutert ihre Entdeckungen
-\begin{itemize}
-\item komplexe Value Objects, nicht nur simple Wrapper. Beispiel: Adresse
-\item Validierungen möglich
-\end{itemize}
-\item[J] x
+\item[N] wir hatten ziemlich viele riesige Entitäten, z. B. hat unser Kunde alle Angaben über ihn direkt als Attribute gehabt: Alle Namens- und Adressbestandteile, Telefonnummer, Kreditkartennummer und was noch alles. Davon haben wir den Großteil herausgezogen und in spezialisierten Value Objects untergebracht. Der Kunde kennt jetzt nur noch diese Value Objects und nicht mehr die Details.
+\item[N] Ein interessanter Nebeneffekt: Wir machen jetzt auch komplexe Value Objects, nicht nur simple Wrapper. Wie zum Beispiel unsere Adresse.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Eine Adresse ist ein gutes Beispiel für ein komplexes Value Object in der Domäne \glqq{}Online-Store\grqq{}. Denk nur dran, dass es in anderen Domänen ganz anders sein kann. In einer Grundstücksverwaltung oder in einer Briefzustellungssoftware wird man Adressen vermutlich eher als Entitäten modellieren. 
+\item[N] Hm...
+\item[J] Aber ich hab Dich unterbrochen. Was hast Du denn sonst noch so rausgefunden?
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Das coolste ist: Die Value Objects ziehen den Code förmlich an! Alles, was mit einem Value Object zu tun hat, implementieren wir dort als Methode: z. B. Validierung oder das Herausziehen von Teilaspekten (... ?!)
+Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nicht wiedergefunden, wenn man ihn gebraucht hat, und hat alles nochmal implementiert, und nochmal... Jetzt gibt es einen klaren Platz für diesen Code, das ist super!
 %%
 \item[N] Aber es knirscht auch noch ganz schön an vielen Stellen.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Wo denn zum Beispiel?
 \item[N] 
 \end{description}
