@@ -1,6 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
-Foto: Dunkle Regenwolken oder so
+\includegraphics[width=\framewidth]{pics/thunderstorm.jpg}
+% Copyright dimitri_c, http://www.freeimages.com/photo/1200003
+% \paperwidth ??
 \end{frame}
 
 %%%%%%
@@ -14,7 +16,7 @@ Foto: Dunkle Regenwolken oder so
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Unsere aktuelle Architektur}
-Klassisches 3-Schichten-Modell
+\includegraphics[width=\framewidth]{pics/Layer.pdf}
 
 \end{frame}
 
@@ -29,7 +31,7 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Unsere aktuelle Architektur}
-<Einblendung KundenEditUI, KundenEditModel, KundenBS, KundenPS, KundenDAO, KundenVO, KundenDTO>
+\includegraphics[width=\framewidth]{pics/LayerMitObjekten.pdf}
 \end{frame}
 
 %%%%%%
@@ -155,7 +157,8 @@ Gehen ab.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Einige Wochen später...}
-Bild mit schönem Wetter
+\includegraphics[width=\framewidth]{pics/dandelions.jpg}
+% Copyright Krappweis, http://www.freeimages.com/photo/1429166
 \end{frame}
 
 %%%%%%
@@ -196,7 +199,7 @@ Bild mit schönem Wetter
 \begin{description}
 \item[N] Das coolste ist: Die Value Objects ziehen den Code förmlich an! Alles, was mit einem Value Object zu tun hat, implementieren wir dort als Methode: z. B. Validierung oder das Herausziehen von Teilaspekten (... ?!)
 Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nicht wiedergefunden, wenn man ihn gebraucht hat, und hat alles nochmal implementiert, und nochmal... Jetzt gibt es einen klaren Platz für diesen Code, das ist super!
-%%
+\item[J] Mir scheint, Ihr seid auf einem richtig guten Weg!
 \item[N] Aber es knirscht auch noch ganz schön an vielen Stellen.
 \end{description}
 }
@@ -204,7 +207,8 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \note{
 \begin{description}
 \item[J] Wo denn zum Beispiel?
-\item[N] 
+\item[N] Naja, wir Entwickler kommen noch nicht so gut klar mit den Leuten vom Fachbereich. Sie sprechen eine ganz andere Sprache als wir, zum Beispiel sagen sie "Artikel", und das heißt bei uns im Code "Bestellposition". Einer von uns hat das gut im Griff und spielt immer den Übersetzer. Aber wenn der nicht da ist, läuft echt gar nix.
+\item[J] Dass eine gemeinsame Sprache sehr wichtig ist, das ist auch ein Schwerpunkt von DDD.
 \end{description}
 }
 
@@ -213,7 +217,8 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Die allgegenwärtige Sprache}
 \begin{itemize}
-\item x
+\item Fachbegriffe überall verwenden, auch im Code!
+\item Glossar
 \end{itemize}
 \end{frame}
 
