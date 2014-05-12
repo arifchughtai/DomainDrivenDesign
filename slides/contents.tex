@@ -247,6 +247,14 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \begin{description}
 \item[N] Und wenn ich mal merke, dass ich einen ungeschickten Begriff eingeführt habe, und den ändern möchte? Dann muss ich vermutlich auch in meinem Code alles umbenennen, oder?
 \item[J] Ja genau. Ich sehe, so langsam findest Du Zugang zu dem Thema :-)
+\item[N] Eine Frage habe ich aber jetzt schon noch. Ich versuche jetzt ja immer, meine Logik schön auf Values und Entities zu verteilen. Oft ist das auch ganz natürlich, wo eine Methode hingehört. Aber dann gibt es immer wieder Code, der einfach nirgends so richtig passen will. Der landet bei uns dann meistens in static-Methoden von irgendwelchen Entitäten. 
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Ich ahne zwar schon, was Du meinen könntest, aber kannst Du mal ein Beispiel nennen?
+\item[N] Mhhhm.... Eine Sache war eine static Methode authenticate() auf der Klasse User. Die muss überprüfen, ob Username und Passwort da sind und auch ob sie richtig sind. Den ersten Teil hätte ich ja schon als Instanzmethode sehen können. Der Abgleich mit den hinterlegten Werten hat aber in einer Instanzenvariablen nichts zu suchen, oder siehst Du das anders?
 \end{description}
 }
 
@@ -254,15 +262,42 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Domain Services}
 \begin{itemize}
-\item TODOOOO
+\item Hinweis auf fehlenden Service: Code in static Methoden
+\item zustandslos
+\item oft als Einstieg in die Domäne
+\item Achtung vor blutleerem Modell
 \end{itemize}
 \end{frame}
 
 %%%%%%
 \note{
 \begin{description}
-\item[N] x
-\item[J] x
+\item[J] Du scheinst auf Code gestoßen zu sein, der in einen Domain Service gehört.
+\item[N] Service? Oh nein - muss ich jetzt eine WSDL schreiben? Diese ganze XML-Hölle wollte ich hier eigentlich nicht haben!
+\item[J] Keine Sorge, hier geht es nicht um SOAP-Services oder um Remote-Aufrufe.
+\item[N] Dann bin ich ja beruhigt. Was ist das sonst?
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Ein Domain Service ist ein Stück Logik, das im Normalfall zustandslos ist. Das zustandslose hat Dich ja auch dazu gebracht, den Code als static Methode zu implementieren. Der Domain Service gibt solch einem herrenlosen Stück Code ein zu Hause. Es kann von außen angestoßen werden und triggert dann Aktionen in der Domain.
+\item[N] Das verstehe ich. Jede Methode, bei der ich nicht weiß, wo sie hinkommt, packe ich einfach erstmal in einen Service. Das ist ja einfach.
+\item[J] Nur das nicht. Dieser Reflex ist leider sehr häufig. Daher habe ich auch bisher die Services nicht erwähnt. Sie sind eher das Mittel für den Notfall. 
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Nur wenn Du keine Entität oder kein Value Object findest, wo die Logik hingehört, solltest Du über einen Service nachdenken. 
+\item[N] Wieso denn? Ich könnte doch einfach mal die Prozesse runterschreiben in Service-Methoden und dann nach und nach Entities und Value Objects erkennen und herausziehen.
+\item[J] Das klappt leider nur sehr selten. Meist bleibt der Code dann sehr prozedural. Die Klassen werden dann zwar meist noch angelegt. Die Logik bleibt aber oft im Service. Das Domänen-Modell verkommt dann zu einem reinen Datenmodell und bleibt blutleer.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Das habe ich verstanden. Ich will meine Daten und mein Verhalten möglichst eng beieinander haben. Das wird mir nicht gelingen, wenn ich vieles in zustandslose Services verpacke. Danke für die Hinweise!
 \end{description}
 }
 
@@ -476,7 +511,9 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 \note{
 \begin{description}
-\item[J] TODO!!!!!!!!!!!!!!!!: Salbungsvolle Überleitung
+\item[N] Das gefällt mir jetzt wirklich. Wenn ich dran denke, wie unaufgeräumt wir gestartet waren. Logik überall verteilt. Abhängigkeiten und Aufrufketten quer durch alle Schichten hindurch. Namen, bei denen mir die Haare jetzt zu Berge stehen. Da sind wir jetzt einen großen Schritt weitergekommen.
+\item[J] Oh ja. Die Fachlichkeit steht jetzt im Zentrum und kann vernünftig getestet werden.. Neue Anforderungen können sinnvoll eingebaut werden. Und ihr sprecht im Team eine einheitliche Sprache.
+\item[N] Vielen Dank Dir!
 \end{description}
 }
 
