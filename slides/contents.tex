@@ -233,6 +233,64 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 % Hier geht's weiter...
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Einige Monate später...}
+\includegraphics[width=\framewidth]{pics/dandelions.jpg}
+% Copyright Krappweis, http://www.freeimages.com/photo/1429166
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Dass ist ja schön, dass wir uns mal wieder sehen!
+\item[J] Freut mich auch. Erzähl doch mal, wie es bei Euch jetzt inzwischen so läuft? Kommt Ihr gut voran?
+\item[N] Oh ja - wir sind sehr zufrieden. Natürlich klappt nicht alles perfekt. Aber gerade gestern hatte ich mal wieder so ein Aha-Erlebnis. Wir hatten beim Sprint-Review bemerkt, dass wir bei der Rabattberechnung einen Randfall nicht richtig umgesetzt hatten. Ich habe direkt danach kurz in den Code geschaut. Und mein Fachler saß noch da und hat auf einmal angefangen, mit mir im Code zu lesen. Der Hammer war, dass er den Fehler vor mir gefunden hat. Dadurch, dass er die Begriffe im Code kannte, haben ihn die ganzen eckigen und geschweiften Klammern anscheinend nicht gestört.
+\item[J] Das klingt ja echt, als ob alles in eine gute Richtung geht.
+\item[N] Das denke ich auch. Wir merken jetzt einfach, dass es sich ausgezahlt hat, in ein passendes Objekt-Modell zu investieren. Das steht jetzt einfach bombensicher.
+\item[J] Ähhmmm. Da wäre ich mir mal nicht zu sicher.
+\item[N] Wieso - alle Funktionalität und Logik ist dort, wo sie hingehört.
+\item[J] Es kann theoretisch schon sein, dass das jetzt so bleibt, aber das ist nicht so wahrscheinlich. Das kann verschiedene Gründe haben.
+\item[N] Und welche könnten das sein?
+\end{description}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Gründe für Anpassungen am Modell}
+\begin{itemize}
+\item Grund Nummer 1: Lernen
+\item Bessere Begriffe
+\item Beziehungen werden klarer
+\item Neue Konzepte/Abstraktionen tauchen auf
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[J] Meistens hängt es damit zusammen, dass man im Laufe der Zeit lernt. 
+\item[N] Das ist klar. am Anfang muss man irgendwann mal loslegen, sonst bleibt man ewig in der Analyse stecken und man bekommt nie ein System, das irgendwas tut.
+\item[J] Gleichzeitig ist es halt so, dass man zu Beginn am wenigsten Informationen und Erfahrung hat. Daher besteht schon die Gefahr, dass man Entscheidungen trifft, die nicht auf Dauer tragen. Im einfachsten Fall kann das sein, dass man einen Begriff wählt, der letztendlich doch nicht der ideale war.
+\item[N] Und was macht man dann? Man kann ja nicht ständig alles umbenennen. Es hilft ja nicht, dass man im Glossar einen Eintrag ändert. Das zieht sich ja durch alles durch: Akzeptanztests, Code im schlimmsten Fall sogar Datenbank-Tabellen.
+\item[J] Im besten Fall kommt das ja nicht sooo oft vor, dass man sich vergriffen hat. Aber Du hast schon recht: Das zieht sich dann durch. Durch einfache Text-Suche und Ersetzen erwischt man dann aber doch das meiste, wenn der Begriff davor einheitlich verwendet wurde. Wenn bei uns der Verdacht aufkommt, dass wir einen Begriff ersetzen sollten, dann nehmen wir den erstmal auf eine Liste auf und beobachten das ein wenig für uns. Die eigentliche Ersetzung ziehen wir dann mal möglichst schnell durch, wenn es ein wenig ruhiger ist. Dann haben wir nicht ganz so viel zu Mergen. Oft sind es aber auch etwas harmlosere Änderungen am Modell, die sich nicht so sehr durchziehen.
+\item[N] Zum Beispiel?
+\item[J] Oft merkt man, dass die Art der Beziehungen zwischen zwei Klassen nicht geschickt gewählt wurde. In manchen Teams ist der Reflex, dass fast alle Assoziationen bi-direktional umgesetzt werden, damit man ja von jedem Objekt aus den gesamten Graph durchlaufen kann. Das führt dann zu unnötigen Zyklen. Meistens ist die Richtung, in die ich laufe, von der Fachlogik recht klar vorgegeben. Wenn man dann merkt, dass eine Richtung nicht oder nicht mehr nötig ist, dann sollte man die dringend rausmachen. Denn das vereinfacht das Modell, was eigentlich immer gut ist. 
+\item[N] Jetzt wo Du das sagst, fällt mir auch eine Sache aus  dem letzten Sprint ein: Das sind wir mit einer uni-direktionalen Beziehung gestartet und haben dann später gemerkt, dass das nicht reichte.
+\item[J] Wichtig ist immer, dass die Software soft bleibt. Das Modell soll möglichst geschmeidig bleiben, damit wir weiter modellieren können. Und nichts ist für die Änderbarkeit besser, als wenn man häufig Änderungen vornimmt.
+\item[N] Wahrscheinlich ist das dann auch die Argumentation, mit der ich das verkauft kriege, wenn ich schon wieder am Refactoren bin. Jeder in der Firma sollte ja ein Interesse daran haben, dass die Software nicht irgendwann total starr und unflexibel wird.
+\item[J] Das stimmt. Wo Du gerade das Stichwort Refactoring verwendest: Manchmal genügen die klassischen Refactorings - wie die von Martin Fowler - hier nicht. 
+\item[N] Wie meinst Du das?
+\item[J] Die meisten der klassischen Refactorings setzen eher darauf, dass man kleinere Schritte macht. So etwas wie das Umbenennen, von dem wir gerade schon sprachen. Es kommt aber auch immer wieder vor, dass man merkt, dass ein komplettes Konzept geändert werden muss.
+\item[N] Woran kann ich das merken?
+\item[J] Ein klassisches Symptom ist, dass ständig Begriffe verwendet werden, die sich nicht im Glossar wiederfinden und irgendwie so zwischen den Stühlen sind. Wenn das immer wieder auftaucht, dann will ich das auch im Code wiederfinden. Sobald ich im Kopf ein Mapping vornehmen oder jemanden fragen muss, wo etwas implementiert ist, bin ich wahrscheinlich schon in Schwierigkeiten. Ein anderer Bereich sind Validierungen und Constraints.
+\item[N] Ich hatte gedacht, dass wir das immer direkt an den Objekten machen. Bei den Value Objects im Normal direkt bei der Erzeugung. Damit fahren wir auch ganz gut bisher.
+\item[J] Das ist oft auch genau das richtige. Es kann aber auch sein, dass die Art der Validierung je nach Kontext unterschiedlich sein kann. Wenn dann das Objekt unterschiedlichste Fälle unterscheiden muss, führt das bald zur Überfrachtung mit Logik. Typischerweise ändern sich die Validierungen auch unabhängig vom Rest eines Objekts. Da kann dann eine Validierungs-Regel als Strategieklasse der bessere Weg sein, das zu modellieren.
+\item[N] Klingt sinnvoll. Je nach Kontext kann ich die entsprechende Strategie verwenden. Die einzelnen Strategien kann ich dann unabhängig ändern und auch isoliert testen, während das Kernobjekt nicht zu sehr aufgebläht wird.
+\item[J] 
+\end{description}
+}
+
+
 % FAZIT:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Achtung!}
