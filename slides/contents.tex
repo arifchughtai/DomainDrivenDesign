@@ -207,7 +207,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \note{
 \begin{description}
 \item[J] Wo denn zum Beispiel?
-\item[N] Naja, wir Entwickler kommen noch nicht so gut klar mit den Leuten vom Fachbereich. Sie sprechen eine ganz andere Sprache als wir, zum Beispiel sagen sie "Artikel", und das heißt bei uns im Code "Bestellposition". Einer von uns hat das gut im Griff und spielt immer den Übersetzer. Aber wenn der nicht da ist, läuft echt gar nix.
+\item[N] Naja, wir Entwickler kommen noch nicht so gut klar mit den Leuten vom Fachbereich. Sie sprechen eine ganz andere Sprache als wir, zum Beispiel sagen sie "Artikel", und das heißt bei uns im Code "Bestellposition". Einer von uns hat das gut im Griff und spielt immer den Übersetzer. Aber wenn der nicht da ist, läuft echt gar nix. Manchmal benutzen aber auch alle denselben Begriff, meinen nur etwas komplett Unterschiedliches. Dass hinterher nix zusammenpasst, ist da ja fast schon garantiert.
 \item[J] Dass eine gemeinsame Sprache sehr wichtig ist, das ist auch ein Schwerpunkt von DDD.
 \end{description}
 }
@@ -215,19 +215,38 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Die allgegenwärtige Sprache}
+\begin{frame}{Die allgegenwärtige und gemeinsame Sprache}
 \begin{itemize}
 \item Fachbegriffe überall verwenden, auch im Code!
-\item Glossar
+\item Glossar zur Begriffsklärung
+\item Muss reichhaltig genug sein  für sämtliche Kommunikation
+\item Beschreibt nicht nur die Einheiten im System, sondern auch Aufgaben und Funktionalitäten
+\item Muss widerspruchsfrei und eindeutig sein
 \end{itemize}
 \end{frame}
 
 %%%%%%
 \note{
 \begin{description}
-\item[J] Du hast ja selbst schon festgestellt, wie wichtig und schwierig die Sprache ist.
-\item[N] x
-\item[J] x
+\item[J] Du hast ja selbst schon festgestellt, wie wichtig und schwierig die Sprache ist. Alle müssen dieselbe Sprache sprechen - vom Auftraggeber über den Fachbereich bis zum Entwickler. Idealerweise solltest Du dem Auftraggeber den Namen irgendeiner Klasse nennen können, und er kann sich etwas darunter vorstellen.
+\item[N] Hm, also das klappt bei uns noch nicht so gut, bei unserem KundeVO kann sich unser Auftraggeber echt nichts vorstellen, komisch eigentlich.
+\item[J] Naja, ein VO gibt es in seiner Fachlichkeit nun mal nicht. Hast Du vielleicht einen besseren Namen für die Klasse?
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Naja, eigentlich ist es ja ein Kunde - also wie wäre es damit? Ginge das? Einfach nur "Kunde"?
+\item[J] Klar, das wäre ziemlich gut.
+\item[N] Aber das ist ja sicher noch nicht alles.
+\item[J] Das Wichtigste hierbei ist sicherlich, konsequent zu sein. Die gemeinsame Sprache muss alles umfassen und muss in allen Gesprächen benutzt werden - egal ob da nur Entwickler oder nur Fachler oder beide miteinander reden. Ein Glossar hilft ungemein, um die Begriffe zu schärfen, damit es möglichst wenige Missverständnisse gibt. Und natürlich darf jeder Begriff nur für genau eins verwendet werden - wenn's mehrdeutig wird, muss man gemeinsam überlegen, wie man das auflösen kann.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Und wenn ich mal merke, dass ich einen ungeschickten Begriff eingeführt habe, und den ändern möchte? Dann muss ich vermutlich auch in meinem Code alles umbenennen, oder?
+\item[J] Ja genau. Ich sehe, so langsam findest Du Zugang zu dem Thema :-)
 \end{description}
 }
 
