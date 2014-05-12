@@ -231,7 +231,77 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \end{description}
 }
 
-% Hier geht's weiter...
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Repositories}
+\begin{itemize}
+\item Fachliche Schnittstelle zu Daten
+\item Gaukeln In-Memory-Collection vor
+\item Keine Infrastruktur-Abhängigkeiten in Domain Code
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Gut, dass ich Dich treffe. Ich bin da nämlich gestern auf ein Design-Problem gestoßen, bei dem mir ein wenig der Durchblick fehlt.
+\item[J] Dann schieß mal los. Vielleicht kann ich ja helfen.
+\item[N] Wir hatten bisher vor allem die Kern-Fachlichkeit im Blick. Value Objects, Entities und Services haben wir das recht gut abbilden können. Jetzt wollten wir aber mal eine Datenbank anbinden. Ich habe da mal die Bücher gewälzt und bin über Repositories gestoßen.
+\item[J] Genau - gut, dass  Du das gefunden hast.
+\item[N] Wir sind da mal ganz nach Lehrbuch drangegangen und haben uns eine Schnittstelle gebaut, bei der wir einfach nur fachlich beschreiben, welche Daten wir lesen, löschen oder speichern wollen. Von der Ansteuerung ist das dann in etwa so, als ob es eine Collection wäre, die im Speicher liegt. Nur dass ich fachliche Zugriffsmethoden habe. Technische Klassen werden in der Schnittstelle nicht referenziert, also nichts aus Persistence-Frameworks oder ähnlichem.
+\item[J] Das klingt doch schon mal sehr vernünftig. Verstehe ich das richtig, dass Ihr eine Trennung von Schnittstelle und Implementierung habt?
+\item[N] Ja genau. Wir haben die Schnittstelle, also z.B. das KundenRepository. Irgendwo muss dann natürlich auch mal wirklich eine Datenbank angesprochen werden. Das passiert dann in der Klasse KundenDatabaseRepository. Dort werden dann Queries gebaut oder der OR-Mapper angeworfen. In unseren Domain-Services, wo wir die Repositories verwenden, sind wir dann aber absolut Datenbank-los unterwegs.
+\item[J] Und wo ist Euer Problem?
+\item[N] Wie strukturieren wir das am Besten? Ich zeige es Dir mal kurz im Diagramm, was ich meine:
+\end{description}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Repositories}
+\begin{itemize}
+TODOOOOO: Bild mit klassischer Schichtung
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Wir haben wir unseren Domain Service. Der programmiert sauber gegen die Schnittstelle des Repositories, sobald ich aber dann doch die wirkliche Implementierung für die DB verwenden will, habe ich doch die Abhängigkeit aus der Domain zur Datenbank, also zu technischen Dingen. Das will ich so doch nicht haben, oder? 
+\item[J] Das ist wirklich nicht so ideal. Natürlich bist Du schonmal deutlich besser unterwegs als davor! Du hast alle Fachlichkeit in einer Schicht angesiedelt. Aber diese Abhängigkeit fühlt sich irgendwie falsch an.
+\item[N] Letzten Endes habe ich aber keine andere Option, wenn ich mich an die Schichtenarchitektur halten will. Alle Zugriffe müssen ja von oben nach unten gehen. Von unten nach oben ist verboten.
+\item[J] Stimmt, das klassische 3-Tier-Schichten-Modell mit UI - Business - Persistence führt zu diesem Phänomen. Es gibt aber auch noch eine andere Art, wie man das ganze betrachten kann. Die finde ich inzwischen einleuchtender. Halte Dich mal gut fest, beim ersten Betrachten kann es einem da schon mal kurz schwindlig werden.
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Repositories}
+\begin{itemize}
+TODOOOOO: Bild mit Innen-Außen-Architektur.
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Uuuups - wie muss ich das jetzt verstehen?
+\item[J] Wenn wir die Architektur so darstellen, dass stellen wir die Domäne ins Zentrum. 
+\item[N] Das passt ja auch zu unserer ganzen Vorgehensweise bisher. Die Fachlichkeit ist das Kernstück der Software.
+\item[J] Statt von oben und unten reden wir eher von innen und außen. Innen ist also die Domäne. Außen ist der Rest der Welt, mit dem wir in Verbindung stehen. Wir können über verschiedene Kanäle Nachrichten nach außen loswerden oder auch von außen angestoßen werden. Wir definieren eine fachliche Schnittstelle innen. Die Anbindung nach außen passiert dann über einen Adapter. Die Implementierung des Repositories ist dann so ein Adapter. Dort wird die Schnittstelle z.B. auf eine SQL oder NO-SQL-DB adaptiert.
+\item[N] Und wo kriege ich einen solchen Adapter dann her? Auf Deinem Bild hier sieht es ja so aus, als ob es keine Zugriffe aus  der Domäne auf die Außenwelt gibt.
+\item[J] Gut erkannt! Dort wo ich ein Repository brauche - also typsicherweise in einem Domain Service, wünsche ich mir einfach ein Repository - also erwarte das z.B. als Konstruktor-Argument. Das Wiring mit der Datenbank-Implementierung erfolgt dann durch das Zusammenbauen der Anwendung. Dependency Injection ist das Stichwort.
+\item[N] Ach so - Du meinst Spring oder CDI!
+\item[J] Nicht unbedingt. Klar - ich kann mir das Zusammenbauen von einem Container oder Framework abnehmen lassen. Oft ist das auch eine gute Idee. In einfachen Fällen kann ich aber auch einfach in der main-Methoden die richtigen Implementierungen instanziieren und dann miteinander verheiraten.
+\item[N] Moment mal - ich glaub, jetzt sehe ich wo das hinführt. Das hilft mir ja auch beim Testen. Auch hier baue ich mir ja einen Teil der Anwendung zusammen. Da habe ich jetzt dann die Wahl, ob ich ein "echtes" also DB-gebundenes Repository verwende, oder einfach nur einen Mock oder Stub, der die Daten in einer Collection hält. Das ist ja wirklich elegant. Ich habe gesehen, hier gibt es noch andere Adapter. Wozu sind die da?
+\item[J] Bisher haben wir ja vor allem über Repositories geredet, also, wo die Daten herkommen oder hingehen. Die anderen Adapter beschreiben vor allem die Wege in die Domäne. Also, wie werden fachliche Prozesse getriggert. Wie sieht die Anbindung aus. Auch hier sind ja die unterschiedlichsten Wege denkbar: GUI, REST-/SOAP-Schnittstelle, ... Rein technisch sehen die entsprechenden Ansteuerungsstrecken ja oft extrem unterschiedlich aus. Letzten Endes ist die fachliche Schnittstelle, bei der sie landen ja immer die gleiche. Ob ich jetzt einen "Bestellen"-Knopf drücke oder per Rest-Call das Signal dazu gebe, letzten Endes soll ja das gleiche passieren.
+\item[N] Und auch das ist ja für das Testen wieder geschickt. Ich kann mir einen Testtreiber schreiben, der einfach auf der Domänenschicht aufsetzt. Das ist ja auch nur ein weiterer Adapter.
+\item[J] Ganz genau. Wenn ich mein System so strukturiere, dann stelle ich die Domäne ins Zentrum. Die Interaktion mit außen geschieht über Ports und Adapters. Das zwingt mich dazu, dass ich mir über meine Schnittstelle sehr bewusst bin. Aber das ist ja immer ein gute Idee. In einem ersten Schritt setze ich dann vielleicht einen Rest-Adapter drauf. Wenn dann später die Anforderungen sich ändern und ich eine SOAP-Schnittstelle brauche, weil ein Kunde das nur so bei sich integrieren kann, dann brauche ich nur einen weiteren Adapter. Der ist dann nochmal zu testen. Innendrin ändert sich aber erstmal gar nichts.
+\item[N] Nochmal zu meiner Frage mit den Repositories und der Strukturierung...
+\item[J] Stimmt, da  waren wir ja gestartet. In der Domäne definierst Du Deine gewünschte Schnittstelle. Die Implementierung kann dann in separaten Packages oder sogar in einem eigenen Modul  erfolgen. Natürlich muss die Implementierung ihre Schnittstelle kennen. In die andere Richtung ist aber keine Abhängigkeit notwendig.
+\item[N] Okay - das  macht Sinn. Da muss ich jetzt mal ein paar Sachen umbauen gehen. Danke auf jeden Fall fürs Erklären.
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Einige Monate später...}
