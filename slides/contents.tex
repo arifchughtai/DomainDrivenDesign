@@ -264,8 +264,18 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[J] Dann schieß mal los. Vielleicht kann ich ja helfen.
 \item[N] Wir hatten bisher vor allem die Kern-Fachlichkeit im Blick. Value Objects, Entities und Services haben wir das recht gut abbilden können. Jetzt wollten wir aber mal eine Datenbank anbinden. Ich habe da mal die Bücher gewälzt und bin über Repositories gestoßen.
 \item[J] Genau - gut, dass  Du das gefunden hast.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[N] Wir sind da mal ganz nach Lehrbuch drangegangen und haben uns eine Schnittstelle gebaut, bei der wir einfach nur fachlich beschreiben, welche Daten wir lesen, löschen oder speichern wollen. Von der Ansteuerung ist das dann in etwa so, als ob es eine Collection wäre, die im Speicher liegt. Nur dass ich fachliche Zugriffsmethoden habe. Technische Klassen werden in der Schnittstelle nicht referenziert, also nichts aus Persistence-Frameworks oder ähnlichem.
 \item[J] Das klingt doch schon mal sehr vernünftig. Verstehe ich das richtig, dass Ihr eine Trennung von Schnittstelle und Implementierung habt?
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[N] Ja genau. Wir haben die Schnittstelle, also z.B. das KundenRepository. Irgendwo muss dann natürlich auch mal wirklich eine Datenbank angesprochen werden. Das passiert dann in der Klasse KundenDatabaseRepository. Dort werden dann Queries gebaut oder der OR-Mapper angeworfen. In unseren Domain-Services, wo wir die Repositories verwenden, sind wir dann aber absolut Datenbank-los unterwegs.
 \item[J] Und wo ist Euer Problem?
 \item[N] Wie strukturieren wir das am Besten? Ich zeige es Dir mal kurz im Diagramm, was ich meine:
@@ -285,8 +295,14 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \begin{description}
 \item[N] Wir haben wir unseren Domain Service. Der programmiert sauber gegen die Schnittstelle des Repositories, sobald ich aber dann doch die wirkliche Implementierung für die DB verwenden will, habe ich doch die Abhängigkeit aus der Domain zur Datenbank, also zu technischen Dingen. Das will ich so doch nicht haben, oder? 
 \item[J] Das ist wirklich nicht so ideal. Natürlich bist Du schonmal deutlich besser unterwegs als davor! Du hast alle Fachlichkeit in einer Schicht angesiedelt. Aber diese Abhängigkeit fühlt sich irgendwie falsch an.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[N] Letzten Endes habe ich aber keine andere Option, wenn ich mich an die Schichtenarchitektur halten will. Alle Zugriffe müssen ja von oben nach unten gehen. Von unten nach oben ist verboten.
 \item[J] Stimmt, das klassische 3-Tier-Schichten-Modell mit UI - Business - Persistence führt zu diesem Phänomen. Es gibt aber auch noch eine andere Art, wie man das ganze betrachten kann. Die finde ich inzwischen einleuchtender. Halte Dich mal gut fest, beim ersten Betrachten kann es einem da schon mal kurz schwindlig werden.
+\end{description}
 }
 
 
@@ -303,18 +319,46 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[N] Uuuups - wie muss ich das jetzt verstehen?
 \item[J] Wenn wir die Architektur so darstellen, dass stellen wir die Domäne ins Zentrum. 
 \item[N] Das passt ja auch zu unserer ganzen Vorgehensweise bisher. Die Fachlichkeit ist das Kernstück der Software.
-\item[J] Statt von oben und unten reden wir eher von innen und außen. Innen ist also die Domäne. Außen ist der Rest der Welt, mit dem wir in Verbindung stehen. Wir können über verschiedene Kanäle Nachrichten nach außen loswerden oder auch von außen angestoßen werden. Wir definieren eine fachliche Schnittstelle innen. Die Anbindung nach außen passiert dann über einen Adapter. Die Implementierung des Repositories ist dann so ein Adapter. Dort wird die Schnittstelle z.B. auf eine SQL oder NO-SQL-DB adaptiert.
+\item[J] Statt von oben und unten reden wir eher von innen und außen. Innen ist also die Domäne. Außen ist der Rest der Welt, mit dem wir in Verbindung stehen. Wir können über verschiedene Kanäle Nachrichten nach außen loswerden oder auch von außen angestoßen werden. Wir definieren eine fachliche Schnittstelle innen. Die Anbindung nach außen passiert dann über einen Adapter. Die Implementierung des Repositories ist dann so ein Adapter. 
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Dort wird die Schnittstelle z.B. auf eine SQL oder NO-SQL-DB adaptiert.
 \item[N] Und wo kriege ich einen solchen Adapter dann her? Auf Deinem Bild hier sieht es ja so aus, als ob es keine Zugriffe aus  der Domäne auf die Außenwelt gibt.
 \item[J] Gut erkannt! Dort wo ich ein Repository brauche - also typsicherweise in einem Domain Service, wünsche ich mir einfach ein Repository - also erwarte das z.B. als Konstruktor-Argument. Das Wiring mit der Datenbank-Implementierung erfolgt dann durch das Zusammenbauen der Anwendung. Dependency Injection ist das Stichwort.
 \item[N] Ach so - Du meinst Spring oder CDI!
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Nicht unbedingt. Klar - ich kann mir das Zusammenbauen von einem Container oder Framework abnehmen lassen. Oft ist das auch eine gute Idee. In einfachen Fällen kann ich aber auch einfach in der main-Methoden die richtigen Implementierungen instanziieren und dann miteinander verheiraten.
-\item[N] Moment mal - ich glaub, jetzt sehe ich wo das hinführt. Das hilft mir ja auch beim Testen. Auch hier baue ich mir ja einen Teil der Anwendung zusammen. Da habe ich jetzt dann die Wahl, ob ich ein "echtes" also DB-gebundenes Repository verwende, oder einfach nur einen Mock oder Stub, der die Daten in einer Collection hält. Das ist ja wirklich elegant. Ich habe gesehen, hier gibt es noch andere Adapter. Wozu sind die da?
+\item[N] Moment mal - ich glaub, jetzt sehe ich wo das hinführt. Das hilft mir auch beim Testen. Auch hier baue ich mir ja einen Teil der Anwendung zusammen. Da habe ich die Wahl, ob ich ein "echtes" also DB-gebundenes Repository verwende, oder einfach nur einen Mock oder Stub, der die Daten in einer Collection hält. Das ist wirklich elegant. Ich habe gesehen, hier gibt es noch andere Adapter. Wozu sind die da?
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Bisher haben wir ja vor allem über Repositories geredet, also, wo die Daten herkommen oder hingehen. Die anderen Adapter beschreiben vor allem die Wege in die Domäne. Also, wie werden fachliche Prozesse getriggert. Wie sieht die Anbindung aus. Auch hier sind ja die unterschiedlichsten Wege denkbar: GUI, REST-/SOAP-Schnittstelle, ... Rein technisch sehen die entsprechenden Ansteuerungsstrecken ja oft extrem unterschiedlich aus. Letzten Endes ist die fachliche Schnittstelle, bei der sie landen ja immer die gleiche. Ob ich jetzt einen "Bestellen"-Knopf drücke oder per Rest-Call das Signal dazu gebe, letzten Endes soll ja das gleiche passieren.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[N] Und auch das ist ja für das Testen wieder geschickt. Ich kann mir einen Testtreiber schreiben, der einfach auf der Domänenschicht aufsetzt. Das ist ja auch nur ein weiterer Adapter.
-\item[J] Ganz genau. Wenn ich mein System so strukturiere, dann stelle ich die Domäne ins Zentrum. Die Interaktion mit außen geschieht über Ports und Adapters. Das zwingt mich dazu, dass ich mir über meine Schnittstelle sehr bewusst bin. Aber das ist ja immer ein gute Idee. In einem ersten Schritt setze ich dann vielleicht einen Rest-Adapter drauf. Wenn dann später die Anforderungen sich ändern und ich eine SOAP-Schnittstelle brauche, weil ein Kunde das nur so bei sich integrieren kann, dann brauche ich nur einen weiteren Adapter. Der ist dann nochmal zu testen. Innendrin ändert sich aber erstmal gar nichts.
+\item[J] Ganz genau. Wenn ich mein System so strukturiere, dann stelle ich die Domäne ins Zentrum. Die Interaktion mit außen geschieht über Ports und Adapters. Das zwingt mich dazu, dass ich mir über meine Schnittstelle sehr bewusst bin. Aber das ist ja immer ein gute Idee. In einem ersten Schritt setze ich dann vielleicht einen Rest-Adapter drauf. Wenn dann später die Anforderungen sich ändern und ich eine SOAP-Schnittstelle brauche, weil ein Kunde das nur so bei sich integrieren kann, dann brauche ich nur einen weiteren Adapter. Der ist dann nochmal zu testen.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Innendrin ändert sich aber erstmal gar nichts.
 \item[N] Nochmal zu meiner Frage mit den Repositories und der Strukturierung...
 \item[J] Stimmt, da  waren wir ja gestartet. In der Domäne definierst Du Deine gewünschte Schnittstelle. Die Implementierung kann dann in separaten Packages oder sogar in einem eigenen Modul  erfolgen. Natürlich muss die Implementierung ihre Schnittstelle kennen. In die andere Richtung ist aber keine Abhängigkeit notwendig.
 \item[N] Okay - das  macht Sinn. Da muss ich jetzt mal ein paar Sachen umbauen gehen. Danke auf jeden Fall fürs Erklären.
+\end{description}
 }
 
 
@@ -330,6 +374,11 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[N] Dass ist ja schön, dass wir uns mal wieder sehen!
 \item[J] Freut mich auch. Erzähl doch mal, wie es bei Euch jetzt inzwischen so läuft? Kommt Ihr gut voran?
 \item[N] Oh ja - wir sind sehr zufrieden. Natürlich klappt nicht alles perfekt. Aber gerade gestern hatte ich mal wieder so ein Aha-Erlebnis. Wir hatten beim Sprint-Review bemerkt, dass wir bei der Rabattberechnung einen Randfall nicht richtig umgesetzt hatten. Ich habe direkt danach kurz in den Code geschaut. Und mein Fachler saß noch da und hat auf einmal angefangen, mit mir im Code zu lesen. Der Hammer war, dass er den Fehler vor mir gefunden hat. Dadurch, dass er die Begriffe im Code kannte, haben ihn die ganzen eckigen und geschweiften Klammern anscheinend nicht gestört.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Das klingt ja echt, als ob alles in eine gute Richtung geht.
 \item[N] Das denke ich auch. Wir merken jetzt einfach, dass es sich ausgezahlt hat, in ein passendes Objekt-Modell zu investieren. Das steht jetzt einfach bombensicher.
 \item[J] Ähhmmm. Da wäre ich mir mal nicht zu sicher.
@@ -356,21 +405,58 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[J] Meistens hängt es damit zusammen, dass man im Laufe der Zeit lernt. 
 \item[N] Das ist klar. am Anfang muss man irgendwann mal loslegen, sonst bleibt man ewig in der Analyse stecken und man bekommt nie ein System, das irgendwas tut.
 \item[J] Gleichzeitig ist es halt so, dass man zu Beginn am wenigsten Informationen und Erfahrung hat. Daher besteht schon die Gefahr, dass man Entscheidungen trifft, die nicht auf Dauer tragen. Im einfachsten Fall kann das sein, dass man einen Begriff wählt, der letztendlich doch nicht der ideale war.
-\item[N] Und was macht man dann? Man kann ja nicht ständig alles umbenennen. Es hilft ja nicht, dass man im Glossar einen Eintrag ändert. Das zieht sich ja durch alles durch: Akzeptanztests, Code im schlimmsten Fall sogar Datenbank-Tabellen.
+\item[N] Und was macht man dann? Man kann ja nicht ständig alles umbenennen. Es hilft ja nicht, dass man im Glossar einen Eintrag ändert. 
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Das zieht sich ja durch alles durch: Akzeptanztests, Code im schlimmsten Fall sogar Datenbank-Tabellen.
 \item[J] Im besten Fall kommt das ja nicht sooo oft vor, dass man sich vergriffen hat. Aber Du hast schon recht: Das zieht sich dann durch. Durch einfache Text-Suche und Ersetzen erwischt man dann aber doch das meiste, wenn der Begriff davor einheitlich verwendet wurde. Wenn bei uns der Verdacht aufkommt, dass wir einen Begriff ersetzen sollten, dann nehmen wir den erstmal auf eine Liste auf und beobachten das ein wenig für uns. Die eigentliche Ersetzung ziehen wir dann mal möglichst schnell durch, wenn es ein wenig ruhiger ist. Dann haben wir nicht ganz so viel zu Mergen. Oft sind es aber auch etwas harmlosere Änderungen am Modell, die sich nicht so sehr durchziehen.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[N] Zum Beispiel?
 \item[J] Oft merkt man, dass die Art der Beziehungen zwischen zwei Klassen nicht geschickt gewählt wurde. In manchen Teams ist der Reflex, dass fast alle Assoziationen bi-direktional umgesetzt werden, damit man ja von jedem Objekt aus den gesamten Graph durchlaufen kann. Das führt dann zu unnötigen Zyklen. Meistens ist die Richtung, in die ich laufe, von der Fachlogik recht klar vorgegeben. Wenn man dann merkt, dass eine Richtung nicht oder nicht mehr nötig ist, dann sollte man die dringend rausmachen. Denn das vereinfacht das Modell, was eigentlich immer gut ist. 
-\item[N] Jetzt wo Du das sagst, fällt mir auch eine Sache aus  dem letzten Sprint ein: Das sind wir mit einer uni-direktionalen Beziehung gestartet und haben dann später gemerkt, dass das nicht reichte.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Aber manchmal geht's auch in die andere Richtung: Im letzten Sprint ...: Das sind wir mit einer uni-direktionalen Beziehung gestartet und haben dann später gemerkt, dass das nicht reichte.
 \item[J] Wichtig ist immer, dass die Software soft bleibt. Das Modell soll möglichst geschmeidig bleiben, damit wir weiter modellieren können. Und nichts ist für die Änderbarkeit besser, als wenn man häufig Änderungen vornimmt.
 \item[N] Wahrscheinlich ist das dann auch die Argumentation, mit der ich das verkauft kriege, wenn ich schon wieder am Refactoren bin. Jeder in der Firma sollte ja ein Interesse daran haben, dass die Software nicht irgendwann total starr und unflexibel wird.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Das stimmt. Wo Du gerade das Stichwort Refactoring verwendest: Manchmal genügen die klassischen Refactorings - wie die von Martin Fowler - hier nicht. 
 \item[N] Wie meinst Du das?
 \item[J] Die meisten der klassischen Refactorings setzen eher darauf, dass man kleinere Schritte macht. So etwas wie das Umbenennen, von dem wir gerade schon sprachen. Es kommt aber auch immer wieder vor, dass man merkt, dass ein komplettes Konzept geändert werden muss.
 \item[N] Woran kann ich das merken?
-\item[J] Ein klassisches Symptom ist, dass ständig Begriffe verwendet werden, die sich nicht im Glossar wiederfinden und irgendwie so zwischen den Stühlen sind. Wenn das immer wieder auftaucht, dann will ich das auch im Code wiederfinden. Sobald ich im Kopf ein Mapping vornehmen oder jemanden fragen muss, wo etwas implementiert ist, bin ich wahrscheinlich schon in Schwierigkeiten. Ein anderer Bereich sind Validierungen und Constraints.
-\item[N] Ich hatte gedacht, dass wir das immer direkt an den Objekten machen. Bei den Value Objects im Normal direkt bei der Erzeugung. Oft ist der Code zuerst mitten in einer Methode. Dann ziehen wir das aber immer in eine private Methode, die einen Namen bekommt, der die Fachlichkeit widerspiegelt. Damit fahren wir auch ganz gut bisher.
+\item[J] Ein klassisches Symptom ist, dass ständig Begriffe verwendet werden, die sich nicht im Glossar wiederfinden 
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] und irgendwie so zwischen den Stühlen sind. Wenn das immer wieder auftaucht, dann will ich das auch im Code wiederfinden. Sobald ich im Kopf ein Mapping vornehmen oder jemanden fragen muss, wo etwas implementiert ist, bin ich wahrscheinlich schon in Schwierigkeiten. Ein anderer Bereich sind Validierungen und Constraints.
+\item[N] Ich hatte gedacht, dass wir das immer direkt an den Objekten machen. Bei den Value Objects im Normalfall direkt bei der Erzeugung. Oft ist der Code zuerst mitten in einer Methode. Dann ziehen wir das aber immer in eine private Methode, die einen Namen bekommt, der die Fachlichkeit widerspiegelt. Damit fahren wir auch ganz gut bisher.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Das ist oft auch genau das richtige. Es kann aber auch sein, dass die Art der Validierung je nach Kontext unterschiedlich sein kann. Wenn dann das Objekt unterschiedlichste Fälle unterscheiden muss, führt das bald zur Überfrachtung mit Logik. Typischerweise ändern sich die Validierungen auch unabhängig vom Rest eines Objekts. Da kann dann eine Validierungs-Regel als Strategieklasse der bessere Weg sein, das zu modellieren.
 \item[N] Klingt sinnvoll. Je nach Kontext kann ich die entsprechende Strategie verwenden. Die einzelnen Strategien kann ich dann unabhängig ändern und auch isoliert testen, während das Kernobjekt nicht zu sehr aufgebläht wird.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] TODO!!!!!!!!!!!!!!!!: Salbungsvolle Überleitung
 \end{description}
 }
@@ -381,6 +467,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \begin{frame}{Achtung!}
 \begin{itemize}
 \item Technisches nicht hinten runterfallen lassen
+\item Vorsicht vor blutleeren Modellen - Code in die Objekte!
 \end{itemize}
 \end{frame}
 
@@ -396,7 +483,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Was man beherzigen darf}
 \begin{itemize}
-\item x
+\item Gutes Zusammenspiel mit Specification by Example bzw. ATDD
 \end{itemize}
 \end{frame}
 
