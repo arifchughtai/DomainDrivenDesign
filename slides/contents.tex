@@ -279,7 +279,6 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item Hinweis auf fehlenden Service: Code in static Methoden
 \item zustandslos
 \item oft als Einstieg in die Domäne
-\item Achtung vor blutleerem Modell
 \end{itemize}
 \end{frame}
 
@@ -296,7 +295,51 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \note{
 \begin{description}
 \item[J] Ein Domain Service ist ein Stück Logik, das im Normalfall zustandslos ist. Das zustandslose hat Dich ja auch dazu gebracht, den Code als static Methode zu implementieren. Der Domain Service gibt solch einem herrenlosen Stück Code ein zu Hause. Es kann von außen angestoßen werden und triggert dann Aktionen in der Domain.
-\item[N] Das verstehe ich. Jede Methode, bei der ich nicht weiß, wo sie hinkommt, packe ich einfach erstmal in einen Service. Das ist ja einfach.
+\item[N] Das klingt interessant! Ich glaube, das werde ich gleich mal ausprobieren. Danke!
+\item[J] OK, viel Erfolg!
+\end{description}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\includegraphics[width=\framewidth]{pics/autumn.jpg}
+% Copyright zirzuke, http://www.freeimages.com/photo/1367302
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Hallo Jens!
+\item[J] Hallo, wie geht's?
+\item[N] Sehr gut, wir haben Deine Domain Services mal ausprobiert und dabei viel Interessantes gelernt.
+\item[Klingt gut, erzähl doch mal!]
+\end{description}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Domain Services Revisited}
+\begin{itemize}
+\item Zu viel Code in Services
+\begin{itemize}
+\item Prozedurale Programmmierung
+\item Blutleeres Modell
+\end{itemize}
+\item Zu viel Code in Entitäten
+\begin{itemize}
+\item Überfrachtung der Entitäten mit Verhalten
+\item Verlust konzeptioneller Klarheit
+\item Abhängigkeiten an der falschen Stelle
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%%%%%%
+\note{
+\begin{description}
+\item[N] Als Du mir letztes Mal die Services vorgestellt hast, dachte ich, das ist ja einfach: Jede Methode, bei der ich nicht weiß, wo sie hinkommt, packe ich einfach erstmal in einen Service. Aber das ist auch nicht die Lösung.
+\item[J] Da sind wir einer Meinung.
 \item[J] Nur das nicht. Dieser Reflex ist leider sehr häufig. Daher habe ich auch bisher die Services nicht erwähnt. Sie sind eher das Mittel für den Notfall. 
 \end{description}
 }
