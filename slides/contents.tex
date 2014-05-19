@@ -107,7 +107,7 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 \note{
 \begin{description}
 \item[N] Du meinst zum Beispiel die Objektidentität?
-\item[J] Nein, da sollte man schon selbst etwas implementieren, Objektidentität passt meistens nicht genau. Insbesondere wenn man mit einer Datenbank arbeitet und immer wieder neue Instanzen einer Entität bekommt.
+\item[J] Nein, da sollte man schon selbst etwas implementieren, Objektidentität passt meistens nicht genau. Insbesondere wenn man mit einer Datenbank arbeitet und immer wieder neue Instanzen einer Entität bekommt. Auf der Datenbank haben die Objekte ja auch eine Id. Die ist oft ein sinnvoller Kandidat für eine Identität. 
 \item[N] Aber grundsätzlich ist es schon so, dass meine derzeitigen Datenbankobjekte alles Entitäten sind, oder? Dann verstehe ich noch nicht, was jetzt das Großartige und Neue sein soll...
 \item[J] Nur Geduld! Ich vermute nämlich, dass nicht alle Deiner derzeitigen Datenbankobjekte Entitäten sind. Es gibt ja auch noch Value Objects.
 \end{description}
@@ -317,7 +317,6 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[N] Gut, dass ich Dich treffe. Ich bin da nämlich gestern auf ein Design-Problem gestoßen, bei dem mir ein wenig der Durchblick fehlt.
 \item[J] Dann schieß mal los. Vielleicht kann ich ja helfen.
 \item[N] Wir hatten bisher vor allem die Kern-Fachlichkeit im Blick. Value Objects, Entities und Services haben wir das recht gut abbilden können. Jetzt wollten wir aber mal eine Datenbank anbinden. Ich habe da mal die Bücher gewälzt und bin über Repositories gestoßen.
-\item[J] Genau - gut, dass  Du das gefunden hast.
 \end{description}
 }
 
@@ -459,14 +458,14 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[J] Meistens hängt es damit zusammen, dass man im Laufe der Zeit lernt. 
 \item[N] Das ist klar. am Anfang muss man irgendwann mal loslegen, sonst bleibt man ewig in der Analyse stecken und man bekommt nie ein System, das irgendwas tut.
 \item[J] Gleichzeitig ist es halt so, dass man zu Beginn am wenigsten Informationen und Erfahrung hat. Daher besteht schon die Gefahr, dass man Entscheidungen trifft, die nicht auf Dauer tragen. Im einfachsten Fall kann das sein, dass man einen Begriff wählt, der letztendlich doch nicht der ideale war.
-\item[N] Und was macht man dann? Man kann ja nicht ständig alles umbenennen. Es hilft ja nicht, dass man im Glossar einen Eintrag ändert. 
+\item[N] Da haben wir ja schon drüber geredet. Da heißt es dann umbenennen. Das hatten wir auch schon des öfteren.
 \end{description}
 }
 
 \note{
 \begin{description}
-\item[N] Das zieht sich ja durch alles durch: Akzeptanztests, Code im schlimmsten Fall sogar Datenbank-Tabellen.
-\item[J] Im besten Fall kommt das ja nicht sooo oft vor, dass man sich vergriffen hat. Aber Du hast schon recht: Das zieht sich dann durch. Durch einfache Text-Suche und Ersetzen erwischt man dann aber doch das meiste, wenn der Begriff davor einheitlich verwendet wurde. Wenn bei uns der Verdacht aufkommt, dass wir einen Begriff ersetzen sollten, dann nehmen wir den erstmal auf eine Liste auf und beobachten das ein wenig für uns. Die eigentliche Ersetzung ziehen wir dann mal möglichst schnell durch, wenn es ein wenig ruhiger ist. Dann haben wir nicht ganz so viel zu Mergen. Oft sind es aber auch etwas harmlosere Änderungen am Modell, die sich nicht so sehr durchziehen.
+\item[N] Bei uns im Team machen wir das so. Wenn bei uns der Verdacht aufkommt, dass wir einen Begriff ersetzen sollten, dann nehmen wir den erstmal auf eine Liste auf und beobachten das ein wenig für uns. Die eigentliche Ersetzung ziehen wir dann mal möglichst schnell durch, wenn es ein wenig ruhiger ist. Dann haben wir nicht ganz so viel zu Mergen. 
+\item[J] Gute Idee, das so anzugehen. Das müssen wir auch mal ausprobieren. Oft geht es bei den Änderungen auch über Benennungen hinaus.
 \end{description}
 }
 
@@ -497,8 +496,14 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 \note{
 \begin{description}
-\item[J] und irgendwie so zwischen den Stühlen sind. Wenn das immer wieder auftaucht, dann will ich das auch im Code wiederfinden. Sobald ich im Kopf ein Mapping vornehmen oder jemanden fragen muss, wo etwas implementiert ist, bin ich wahrscheinlich schon in Schwierigkeiten. Ein anderer Bereich sind Validierungen und Constraints.
-\item[N] Ich hatte gedacht, dass wir das immer direkt an den Objekten machen. Bei den Value Objects im Normalfall direkt bei der Erzeugung. Oft ist der Code zuerst mitten in einer Methode. Dann ziehen wir das aber immer in eine private Methode, die einen Namen bekommt, der die Fachlichkeit widerspiegelt. Damit fahren wir auch ganz gut bisher.
+\item[J] und irgendwie so zwischen den Stühlen sind. Wenn das immer wieder auftaucht, dann will ich das auch im Code wiederfinden. Sobald ich im Kopf ein Mapping vornehmen oder jemanden fragen muss, wo etwas implementiert ist, bin ich wahrscheinlich schon in Schwierigkeiten. Wir haben da mal ein Bestellsystem implementiert, bei dem immer über den Status der Bestellung geredet wurde. Im Code war die entsprechende Logik dann aber verteilt auf den Kunden, die Bestellung, und die Lagerverwaltung. Die haben da alle irgendwie mitgespielt. Als wir dann den Zustand als Konzept eingeführt haben, wurde das alles sehr viel klarer.
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[J] Ein typischer Bereich, wo Konzepte erst so nach und nach auftauchen sind Validierungen und Constraints.
+\item[N] Ich hatte gedacht, dass wir das immer gleich direkt an den Objekten machen. Bei den Value Objects im Normalfall direkt bei der Erzeugung. Oft ist der Code zuerst mitten in einer Methode. Dann ziehen wir das aber immer in eine private Methode, die einen Namen bekommt, der die Fachlichkeit widerspiegelt. Damit fahren wir auch ganz gut bisher.
 \end{description}
 }
 
