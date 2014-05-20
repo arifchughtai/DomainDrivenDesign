@@ -68,7 +68,7 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 \item[J] stellt die Punkte vor
 \item[N] Das klingt ja sehr interessant! Aber ist das jetzt nicht wieder so ein neuer Hype?
 \item[J] Nein - Teile schon Jahrzehnte alt
-\item[J] DAS Buch ist über 10 Jahre alt:
+\item[J] DAS Buch ist über 10 Jahre alt
 \end{description}
 }
 
@@ -113,10 +113,10 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 
 \note{
 \begin{description}
-\item[N] Du meinst zum Beispiel die Objektidentität?
-\item[J] Nein, da sollte man schon selbst etwas implementieren, Objektidentität passt meistens nicht genau. Insbesondere wenn man mit einer Datenbank arbeitet und immer wieder neue Instanzen einer Entität bekommt. Auf der Datenbank haben die Objekte ja auch eine Id. Die ist oft ein sinnvoller Kandidat für eine Identität. 
-\item[N] Aber grundsätzlich ist es schon so, dass meine derzeitigen Datenbankobjekte alles Entitäten sind, oder? Dann verstehe ich noch nicht, was jetzt das Großartige und Neue sein soll...
-\item[J] Nur Geduld! Ich vermute nämlich, dass nicht alle Deiner derzeitigen Datenbankobjekte Entitäten sind. Es gibt ja auch noch Value Objects.
+\item[N] Das habe ich auf der Datenbank ja auch immer, dass ich einen Schlüssel definieren muss.
+\item[J] Stimmt - die IDs von der Datenbank sind oft ein sinnvoller Kandidat für eine Identität im Objekt-Modell.
+\item[N] Okay, jetzt nenne ich also alle meine derzeitigen Datenbankobjekte Entitäten, oder? Dann verstehe ich noch nicht, was jetzt das Großartige und Neue sein soll...
+\item[J] Nur Geduld! Ich vermute nämlich, dass nicht alle Deiner derzeitigen Datenbankobjekte wirklich Entitäten sind. Es gibt ja auch noch Value Objects.
 \end{description}
 }
 
@@ -125,7 +125,7 @@ Aber irgendwie stellt sich heraus, dass unsere gesamte Logik total über die Sch
 \begin{itemize}
 \item Wert
 \item hat keine Identität (beschreibt \glqq{}was\grqq{}, nicht \glqq{}wer\grqq{})
-\item Fachlicher Wrapper um technische Datentypen
+\item fachlicher Wrapper um technische Datentypen
 \item bildet eine konzeptionelle Einheit
 \item kann oft als Immutable implementiert werden
 \begin{itemize}
@@ -226,9 +226,9 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \begin{itemize}
 \item Fachbegriffe überall verwenden, auch im Code!
 \item Glossar zur Begriffsklärung
-\item Muss reichhaltig genug sein  für sämtliche Kommunikation
-\item Beschreibt nicht nur die Einheiten im System, sondern auch Aufgaben und Funktionalitäten
-\item Muss widerspruchsfrei und eindeutig sein
+\item muss reichhaltig genug sein  für sämtliche Kommunikation
+\item beschreibt nicht nur die Einheiten im System, sondern auch Aufgaben und Funktionalitäten
+\item muss widerspruchsfrei und eindeutig sein
 \end{itemize}
 \end{frame}
 
@@ -314,12 +314,12 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Domain Services Revisited}
 \begin{itemize}
-\item Zu viel Code in Services
+\item zu viel Code in Services
 \begin{itemize}
-\item Prozedurale Programmmierung
-\item Blutleeres Modell
+\item prozedurale Programmmierung
+\item blutleeres Modell
 \end{itemize}
-\item Zu viel Code in Entitäten
+\item zu viel Code in Entitäten
 \begin{itemize}
 \item Überfrachtung der Entitäten mit Verhalten
 \item Verlust konzeptioneller Klarheit
@@ -355,9 +355,9 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Repositories}
 \begin{itemize}
-\item Fachliche Schnittstelle zu Daten
-\item Gaukeln In-Memory-Collection vor
-\item Keine Infrastruktur-Abhängigkeiten in Domain Code
+\item fachliche Schnittstelle zu Daten
+\item gaukeln In-Memory-Collection vor
+\item keine Infrastruktur-Abhängigkeiten in Domain Code
 \end{itemize}
 \end{frame}
 
@@ -424,7 +424,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 \note{
 \begin{description}
-\item[J] Dort wird die Schnittstelle z.B. auf eine SQL oder NO-SQL-DB adaptiert.
+\item[J] Dort wird die Schnittstelle z.B. auf eine SQL-Datenbank adaptiert. Und wer kein SQL kann, nimmt halt eine NO-SQL-DB.
 \item[N] Und wo kriege ich einen solchen Adapter dann her? Auf Deinem Bild hier sieht es ja so aus, als ob es keine Zugriffe aus  der Domäne auf die Außenwelt gibt.
 \item[J] Gut erkannt! Dort wo ich ein Repository brauche - also typsicherweise in einem Domain Service, wünsche ich mir einfach ein Repository - also erwarte das z.B. als Konstruktor-Argument. Das Wiring mit der Datenbank-Implementierung erfolgt dann durch das Zusammenbauen der Anwendung. Dependency Injection ist das Stichwort.
 \item[N] Ach so - Du meinst Spring oder CDI!
@@ -492,9 +492,9 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \begin{frame}{Gründe für Anpassungen am Modell}
 \begin{itemize}
 \item Grund Nummer 1: Lernen
-\item Bessere Begriffe
+\item bessere Begriffe
 \item Beziehungen werden klarer
-\item Neue Konzepte/Abstraktionen tauchen auf
+\item neue Konzepte/Abstraktionen tauchen auf
 \end{itemize}
 \end{frame}
 
