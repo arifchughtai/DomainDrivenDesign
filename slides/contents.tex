@@ -10,7 +10,7 @@
 \begin{description}
 \item[N] Hallo
 \item[J] Hi, na wie geht's?
-\item[N] Uh, nicht so prima. Jetzt entwickele ich doch schon seit Jahren Software, und eigentlich hätte ich erwartet, dass es irgendwann mal besser klappt, aber irgendwie lande ich bei jedem Projekt wieder bei den gleichen Problemen. Erst fängt man ganz gut an, aber mit der Zeit wird immer alles mühsamer... Guck mal zum Beispiel unser aktuelles Projekt:
+\item[N] Uh, nicht so prima. Jetzt entwickele ich doch schon seit Jahren Software, und eigentlich hätte ich erwartet, dass es irgendwann mal besser klappt, aber irgendwie lande ich bei jedem Projekt wieder bei den gleichen Problemen. Erst fängt man ganz gut an, aber mit der Zeit wird alles immer mühsamer... Guck mal zum Beispiel unser aktuelles Projekt:
 \end{description}
 }
 
@@ -189,8 +189,8 @@ Gehen ab.
 %%%%%%
 \note{
 \begin{description}
-\item[N] wir hatten ziemlich viele riesige Entitäten, z. B. hat unser Kunde alle Angaben über ihn direkt als Attribute gehabt: Alle Namens- und Adressbestandteile, Telefonnummer, Kreditkartennummer und was noch alles. Davon haben wir den Großteil herausgezogen und in spezialisierten Value Objects untergebracht. Der Kunde kennt jetzt nur noch diese Value Objects und nicht mehr die Details.
-\item[N] Ein interessanter Nebeneffekt: Wir machen jetzt auch komplexe Value Objects, nicht nur simple Wrapper. Wie zum Beispiel unsere Adresse.
+\item[N] wir hatten ziemlich viele riesige Entitäten, z. B. hat unser Kunde alle Angaben über ihn direkt als Attribute gehabt: Alle Namens- und Adressbestandteile, Telefonnummer, Kreditkartennummer und was noch alles. Davon haben wir den Großteil herausgezogen und in spezialisierten Value Objects untergebracht. Value Objects müssen nämlich nicht immer nur simple Wrapper sein, sie können auch aus mehreren Werten zusammengesetzt sein.
+Der Kunde kennt jetzt nur noch diese Value Objects, zum Beispiel seine Adresse.
 \end{description}
 }
 
@@ -204,7 +204,7 @@ Gehen ab.
 
 \note{
 \begin{description}
-\item[N] Das coolste ist: Die Value Objects ziehen den Code förmlich an! Alles, was mit einem Value Object zu tun hat, implementieren wir dort als Methode: z. B. Validierung oder das Herausziehen von Teilaspekten (... ?!)
+\item[N] Das coolste ist: Die Value Objects ziehen den Code förmlich an! Alles, was mit einem Value Object zu tun hat, implementieren wir dort als Methode: z. B. Validierung oder das Abfragen von bestimmten Eigenschaften.
 Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nicht wiedergefunden, wenn man ihn gebraucht hat, und hat alles nochmal implementiert, und nochmal... Jetzt gibt es einen klaren Platz für diesen Code, das ist super!
 \item[J] Mir scheint, Ihr seid auf einem richtig guten Weg!
 \item[N] Aber es knirscht auch noch ganz schön an vielen Stellen.
@@ -214,7 +214,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \note{
 \begin{description}
 \item[J] Wo denn zum Beispiel?
-\item[N] Naja, wir Entwickler kommen noch nicht so gut klar mit den Leuten vom Fachbereich. Sie sprechen eine ganz andere Sprache als wir, zum Beispiel sagen sie "Artikel", und das heißt bei uns im Code "Bestellposition". Einer von uns hat das gut im Griff und spielt immer den Übersetzer. Aber wenn der nicht da ist, läuft echt gar nix. Manchmal benutzen aber auch alle denselben Begriff, meinen nur etwas komplett Unterschiedliches. Dass hinterher nix zusammenpasst, ist da ja fast schon garantiert.
+\item[N] Naja, wir Entwickler kommen noch nicht so gut klar mit den Leuten vom Fachbereich. Sie sprechen eine ganz andere Sprache als wir, zum Beispiel sagen sie \glqq Artikel\grqq, und das heißt bei uns im Code \glqq Bestellposition\grqq. Einer von uns hat das gut im Griff und spielt immer den Übersetzer. Aber wenn der nicht da ist, läuft echt gar nix. Manchmal benutzen aber auch alle denselben Begriff, meinen nur etwas komplett Unterschiedliches. Dass hinterher nix zusammenpasst, ist da ja fast schon garantiert.
 \item[J] Dass eine gemeinsame Sprache sehr wichtig ist, das ist auch ein Schwerpunkt von DDD.
 \end{description}
 }
@@ -243,7 +243,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 \note{
 \begin{description}
-\item[N] Naja, eigentlich ist es ja ein Kunde - also wie wäre es damit? Ginge das? Einfach nur "Kunde"?
+\item[N] Naja, eigentlich ist es ja ein Kunde - also wie wäre es damit? Ginge das? Einfach nur \glqq Kunde\grqq?
 \item[J] Klar, das wäre ziemlich gut.
 \item[N] Aber das ist ja sicher noch nicht alles.
 \item[J] Das Wichtigste hierbei ist sicherlich, konsequent zu sein. Die gemeinsame Sprache muss alles umfassen und muss in allen Gesprächen benutzt werden - egal ob da nur Entwickler oder nur Fachler oder beide miteinander reden. Ein Glossar hilft ungemein, um die Begriffe zu schärfen, damit es möglichst wenige Missverständnisse gibt. Und natürlich darf jeder Begriff nur für genau eins verwendet werden - wenn's mehrdeutig wird, muss man gemeinsam überlegen, wie man das auflösen kann.
@@ -287,7 +287,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 \note{
 \begin{description}
-\item[J] Ein Domain Service ist ein Stück Logik, das im Normalfall zustandslos ist. Das zustandslose hat Dich ja auch dazu gebracht, den Code als static Methode zu implementieren. Der Domain Service gibt solch einem herrenlosen Stück Code ein zu Hause. Es kann von außen angestoßen werden und triggert dann Aktionen in der Domain.
+\item[J] Ein Domain Service ist ein Stück Logik, das im Normalfall zustandslos ist. Das Zustandslose hat Dich ja auch dazu gebracht, den Code als static Methode zu implementieren. Der Domain Service gibt solch einem herrenlosen Stück Code ein zu Hause. Es kann von außen angestoßen werden und triggert dann Aktionen in der Domain.
 \item[N] Das klingt interessant! Ich glaube, das werde ich gleich mal ausprobieren. Danke!
 \item[J] OK, viel Erfolg!
 \end{description}
@@ -306,7 +306,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \item[N] Hallo Jens!
 \item[J] Hallo, wie geht's?
 \item[N] Sehr gut, wir haben Deine Domain Services mal ausprobiert und dabei viel Interessantes gelernt.
-\item[Klingt gut, erzähl doch mal!]
+\item[J] Klingt gut, erzähl doch mal!
 \end{description}
 }
 
@@ -333,21 +333,15 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \begin{description}
 \item[N] Als Du mir letztes Mal die Services vorgestellt hast, dachte ich, das ist ja einfach: Jede Methode, bei der ich nicht weiß, wo sie hinkommt, packe ich einfach erstmal in einen Service. Aber das ist auch nicht die Lösung.
 \item[J] Da sind wir einer Meinung.
-\item[J] Nur das nicht. Dieser Reflex ist leider sehr häufig. Daher habe ich auch bisher die Services nicht erwähnt. Sie sind eher das Mittel für den Notfall. 
+\item[N] Dann lande ich nämlich bei Code, der nicht mehr viel mit Objektorientierung zu tun hat - alle Funktionalitäten sind ausgelagert in Services, und meine Objekte sind nur noch Datencontainer. Aber wenn ich zu wenig auslagere, sind irgendwann meine Objekte vollgestopft mit Methoden, dann sieht man auch nichts mehr. Das ist eine ziemliche Gratwanderung, auf die man sich da begibt.
 \end{description}
 }
 
 \note{
 \begin{description}
-\item[J] Nur wenn Du keine Entität oder kein Value Object findest, wo die Logik hingehört, solltest Du über einen Service nachdenken. 
-\item[N] Wieso denn? Ich könnte doch einfach mal die Prozesse runterschreiben in Service-Methoden und dann nach und nach Entities und Value Objects erkennen und herausziehen.
-\item[J] Das klappt leider nur sehr selten. Meist bleibt der Code dann sehr prozedural. Die Klassen werden dann zwar meist noch angelegt. Die Logik bleibt aber oft im Service. Das Domänen-Modell verkommt dann zu einem reinen Datenmodell und bleibt blutleer.
-\end{description}
-}
-
-\note{
-\begin{description}
-\item[N] Das habe ich verstanden. Ich will meine Daten und mein Verhalten möglichst eng beieinander haben. Das wird mir nicht gelingen, wenn ich vieles in zustandslose Services verpacke. Danke für die Hinweise!
+\item[J] Das habt Ihr gut beobachtet. Daher hatte ich die Services auch nicht gleich am Anfang erwähnt. Sie sind eher das Mittel für den Notfall. Nur wenn Du keine Entität oder kein Value Object findest, wo die Logik hingehört, solltest Du über einen Service nachdenken. 
+\item[N] Genau! Ich will meine Daten und mein Verhalten möglichst eng beieinander haben. Das haben wir inzwischen ganz gut hinbekommen. Aber bei einem anderen Design-Problem beißen wir uns noch die Zähne aus.
+\item[J] Worum geht's denn? Vielleicht kann ich ja helfen.
 \end{description}
 }
 
@@ -364,24 +358,15 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%
 \note{
 \begin{description}
-\item[N] Gut, dass ich Dich treffe. Ich bin da nämlich gestern auf ein Design-Problem gestoßen, bei dem mir ein wenig der Durchblick fehlt.
-\item[J] Dann schieß mal los. Vielleicht kann ich ja helfen.
-\item[N] Wir hatten bisher vor allem die Kern-Fachlichkeit im Blick. Value Objects, Entities und Services haben wir das recht gut abbilden können. Jetzt wollten wir aber mal eine Datenbank anbinden. Ich habe da mal die Bücher gewälzt und bin über Repositories gestoßen.
+\item[N] Wir hatten bisher vor allem die Kern-Fachlichkeit im Blick. Mit Value Objects, Entities und Services haben wir das recht gut abbilden können. Jetzt wollten wir aber mal eine Datenbank anbinden. Ich habe da mal die Bücher gewälzt und bin auf Repositories gestoßen. \\
+Wir sind ganz naiv drangegangen und haben uns eine Schnittstelle gebaut, bei der wir einfach nur fachlich beschreiben, welche Daten wir lesen, löschen oder speichern wollen. Von der Ansteuerung ist das dann in etwa so, als ob es eine Collection wäre, die im Speicher liegt. Nur dass ich fachliche Zugriffsmethoden habe. Technische Klassen werden in der Schnittstelle nicht referenziert, also nichts aus Persistence-Frameworks oder ähnlichem.
 \end{description}
 }
 
 \note{
 \begin{description}
-\item[N] Wir sind da mal ganz nach Lehrbuch drangegangen und haben uns eine Schnittstelle gebaut, bei der wir einfach nur fachlich beschreiben, welche Daten wir lesen, löschen oder speichern wollen. Von der Ansteuerung ist das dann in etwa so, als ob es eine Collection wäre, die im Speicher liegt. Nur dass ich fachliche Zugriffsmethoden habe. Technische Klassen werden in der Schnittstelle nicht referenziert, also nichts aus Persistence-Frameworks oder ähnlichem.
 \item[J] Das klingt doch schon mal sehr vernünftig. Verstehe ich das richtig, dass Ihr eine Trennung von Schnittstelle und Implementierung habt?
-\end{description}
-}
-
-\note{
-\begin{description}
-\item[N] Ja genau. Wir haben die Schnittstelle, also z.B. das KundenRepository. Irgendwo muss dann natürlich auch mal wirklich eine Datenbank angesprochen werden. Das passiert dann in der Klasse KundenDatabaseRepository. Dort werden dann Queries gebaut oder der OR-Mapper angeworfen. In unseren Domain-Services, wo wir die Repositories verwenden, sind wir dann aber absolut Datenbank-los unterwegs.
-\item[J] Und wo ist Euer Problem?
-\item[N] Wie strukturieren wir das am Besten? Ich zeige es Dir mal kurz im Diagramm, was ich meine:
+\item[N] Ja genau. Schau mal hier:
 \end{description}
 }
 
@@ -394,14 +379,22 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 %%%%%%
 \note{
 \begin{description}
-\item[N] Wir haben wir unseren Domain Service. Der programmiert sauber gegen die Schnittstelle des Repositories, sobald ich aber dann doch die wirkliche Implementierung für die DB verwenden will, habe ich doch die Abhängigkeit aus der Domain zur Datenbank, also zu technischen Dingen. Das will ich so doch nicht haben, oder? 
-\item[J] Das ist wirklich nicht so ideal. Natürlich bist Du schonmal deutlich besser unterwegs als davor! Du hast alle Fachlichkeit in einer Schicht angesiedelt. Aber diese Abhängigkeit fühlt sich irgendwie falsch an.
+\item[N] Wir haben die Schnittstelle, also in unserem Fall das KundenRepository. Irgendwo muss dann natürlich auch mal wirklich eine Datenbank angesprochen werden. Das passiert dann in der Klasse KundenDatabaseRepository. Dort werden dann Queries gebaut oder der OR-Mapper angeworfen. In unseren Domain-Services, wo wir die Repositories verwenden, sind wir dann aber absolut Datenbank-los unterwegs.
+\item[J] Und wo ist Euer Problem?
+\item[N] Wie strukturieren wir das am Besten? Wir haben hier unseren Domain Service. Der programmiert sauber gegen die Schnittstelle des Repositories. sobald ich aber dann doch die wirkliche Implementierung für die 
 \end{description}
 }
 
 \note{
 \begin{description}
+\item[N] DB verwenden will, habe ich doch die Abhängigkeit aus der Domain zur Datenbank, also zu technischen Dingen. Das will ich so doch nicht haben, oder? 
+\item[J] Das ist wirklich nicht so ideal. Natürlich bist Du schonmal deutlich besser unterwegs als davor! Du hast alle Fachlichkeit in einer Schicht angesiedelt. Aber diese Abhängigkeit fühlt sich irgendwie falsch an.
 \item[N] Letzten Endes habe ich aber keine andere Option, wenn ich mich an die Schichtenarchitektur halten will. Alle Zugriffe müssen ja von oben nach unten gehen. Von unten nach oben ist verboten.
+\end{description}
+}
+
+\note{
+\begin{description}
 \item[J] Stimmt, das klassische 3-Tier-Schichten-Modell mit UI - Business - Persistence führt zu diesem Phänomen. Es gibt aber auch noch eine andere Art, wie man das ganze betrachten kann. Die finde ich inzwischen einleuchtender. Halte Dich mal gut fest, beim ersten Betrachten kann es einem da schon mal kurz schwindlig werden.
 \end{description}
 }
@@ -502,16 +495,16 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \note{
 \begin{description}
 \item[J] Meistens hängt es damit zusammen, dass man im Laufe der Zeit lernt. 
-\item[N] Das ist klar. am Anfang muss man irgendwann mal loslegen, sonst bleibt man ewig in der Analyse stecken und man bekommt nie ein System, das irgendwas tut.
+\item[N] Hm, jetzt wo Du das sagst\ldots Man muss ja irgendwie anfangen, sonst bleibt man ewig in der Analyse stecken und man bekommt nie ein laufendes System.
 \item[J] Gleichzeitig ist es halt so, dass man zu Beginn am wenigsten Informationen und Erfahrung hat. Daher besteht schon die Gefahr, dass man Entscheidungen trifft, die nicht auf Dauer tragen. Im einfachsten Fall kann das sein, dass man einen Begriff wählt, der letztendlich doch nicht der ideale war.
-\item[N] Da haben wir ja schon drüber geredet. Da heißt es dann umbenennen. Das hatten wir auch schon des öfteren.
+\item[N] Da haben wir ja schon drüber geredet. Da heißt es dann umbenennen.
 \end{description}
 }
 
 \note{
 \begin{description}
-\item[N] Bei uns im Team machen wir das so. Wenn bei uns der Verdacht aufkommt, dass wir einen Begriff ersetzen sollten, dann nehmen wir den erstmal auf eine Liste auf und beobachten das ein wenig für uns. Die eigentliche Ersetzung ziehen wir dann mal möglichst schnell durch, wenn es ein wenig ruhiger ist. Dann haben wir nicht ganz so viel zu Mergen. 
-\item[J] Gute Idee, das so anzugehen. Das müssen wir auch mal ausprobieren. Oft geht es bei den Änderungen auch über Benennungen hinaus.
+\item[N] Bei uns im Team machen wir das inzwischen so: Wenn bei uns der Verdacht aufkommt, dass wir einen Begriff ersetzen sollten, dann nehmen wir den erstmal auf eine Liste auf und beobachten das ein wenig für uns. Die eigentliche Ersetzung ziehen wir dann mal möglichst schnell durch, wenn es ein wenig ruhiger ist. Dann haben wir nicht ganz so viel zu mergen. 
+\item[J] Gute Idee, das so anzugehen. Das müssen wir auch mal ausprobieren. Oft geht es bei den Änderungen aber auch über Benennungen hinaus.
 \end{description}
 }
 
@@ -524,7 +517,7 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 
 \note{
 \begin{description}
-\item[N] Aber manchmal geht's auch in die andere Richtung: Im letzten Sprint ...: Das sind wir mit einer uni-direktionalen Beziehung gestartet und haben dann später gemerkt, dass das nicht reichte.
+\item[N] Aber manchmal geht's auch in die andere Richtung: Im letzten Sprint sind wir mit einer uni-direktionalen Beziehung gestartet und haben dann später gemerkt, dass das nicht reichte.
 \item[J] Wichtig ist immer, dass die Software soft bleibt. Das Modell soll möglichst geschmeidig bleiben, damit wir weiter modellieren können. Und nichts ist für die Änderbarkeit besser, als wenn man häufig Änderungen vornimmt.
 \item[N] Wahrscheinlich ist das dann auch die Argumentation, mit der ich das verkauft kriege, wenn ich schon wieder am Refactoren bin. Jeder in der Firma sollte ja ein Interesse daran haben, dass die Software nicht irgendwann total starr und unflexibel wird.
 \end{description}
