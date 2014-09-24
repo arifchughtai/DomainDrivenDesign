@@ -253,13 +253,49 @@ Früher war dieser Code im ganzen System verstreut, und meistens hat man ihn nic
 \note{
 \begin{description}
 \item[N] Und wenn ich mal merke, dass ich einen ungeschickten Begriff eingeführt habe, und den ändern möchte? Dann muss ich vermutlich auch in meinem Code alles umbenennen, oder?
-\item[J] Ja genau. Ich sehe, so langsam findest Du Zugang zu dem Thema :-)
-\item[N] Eine Frage habe ich aber jetzt schon noch. Ich versuche jetzt ja immer, meine Logik schön auf Values und Entities zu verteilen. Oft ist das auch ganz natürlich, wo eine Methode hingehört. Aber dann gibt es immer wieder Code, der einfach nirgends so richtig passen will. Der landet bei uns dann meistens in static-Methoden von irgendwelchen Entitäten. 
+\item[J] Ja genau. Ich sehe, so langsam findest Du Zugang zu dem Thema :-) Hatte ich eigentlich schonmal den Begriff Aggregate erwähnt?
+\item[N] Nicht, dass ich wüsste. Erzähl doch mal!
+\end{description}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Aggregates}
+\begin{itemize}
+\item Besteht aus Value Objects und Entities
+\item Aggregate Root als Einstiegspunkt
+\item Gemeinsame Invarianten und Konsistenzbedingungen
+\item Zugriff auf Elemente über die Root
+\end{itemize}
+\end{frame}
+
+%%%%%%
+
+\note{
+\begin{description}
+\item[J] Ein Aggregate ist flapsig gesagt eine höherwertige Entity. Es besteht aus einem in sich abgeschlossenen Teilgraphen des Domänenmodells. Ein Aggregate hat immer einen Einstiegspunkt: Die Root-Entity.
+\item[N] Uh, das finde ich noch recht abstrakt. Lass mich mal probieren, ob ich das irgendwie anwenden kann... Wenn bei uns die Kunden was bestellen, dann haben wir bisher die Bestellung als Ganzes und gleichzeitig die einzelnen Bestellpositionen. Bisher sind das jeweils einzelne Entitäten. Ahne ich das richtig, dass wir die Bestellung als Ganzes als Aggregate behandeln sollen.
+\end{description}
+}
+
+
+\note{
+\begin{description}
+\item[J] Genau. Natürlich ist es erstmal richtig, dass auch Bestellpositionen als Entities existieren. So richtig lebensfähig und sinnvoll verwendbar sind sie aber nur im Kontext einer Bestellung. So richtig interessant wird es, wenn dann herauskommt, dass für das Aggregate als Ganzes bestimmte Bedingungen gelten, die auf Ebene der einzelnen Elemente davon gar nicht überprüfbar sind.
+\item[N] Meinst Du sowas wie, dass mindestens ein Artikel im Warenkorb sein muss oder nach dem Klick auf den Bestell-Knopf die Positionen nicht mehr hinzugefügt oder gelöscht werden können.
+\end{description}
+}
+
+
+\note{
+\begin{description}
+\item[J] Ja, um solche Invarianten geht es. Die kann ich auf Ebene einzelner Bestellpositionen nicht gewährleisten, außer wenn ich ganz eklige zyklische Abhängigkeiten zur Bestellung aufbaue. Daher müssen die Manipulationen immer über die Root-Entity erfolgen. In Reinform gibt die Root-Entity nur Kopien der Elemente nach außen. Die können dann zum Lesen verwendet werden. Dadurch dass es Kopien sind, ist das Schreiben nicht sinnvoll und auch nicht möglich. 
+\item[N] Eine Frage habe ich aber jetzt schon noch. Ich versuche jetzt ja immer, meine Logik schön auf Values und Entities bzw. Aggregates zu verteilen. 
 \end{description}
 }
 
 \note{
 \begin{description}
+\item[N] Oft ist das auch ganz natürlich, wo eine Methode hingehört. Aber dann gibt es immer wieder Code, der einfach nirgends so richtig passen will. Der landet bei uns dann meistens in static-Methoden von irgendwelchen Entitäten. 
 \item[J] Ich ahne zwar schon, was Du meinen könntest, aber kannst Du mal ein Beispiel nennen?
 \item[N] Mhhhm.... Eine Sache war eine static Methode authenticate() auf der Klasse User. Die muss überprüfen, ob Username und Passwort da sind und auch ob sie richtig sind. Den ersten Teil hätte ich ja schon als Instanzmethode sehen können. Der Abgleich mit den hinterlegten Werten hat aber in einer Instanzenvariablen nichts zu suchen, oder siehst Du das anders?
 \end{description}
@@ -379,8 +415,15 @@ Wir sind ganz naiv drangegangen und haben uns eine Schnittstelle gebaut, bei der
 %%%%%%
 \note{
 \begin{description}
-\item[N] Wir haben die Schnittstelle, also in unserem Fall das KundenRepository. Irgendwo muss dann natürlich auch mal wirklich eine Datenbank angesprochen werden. Das passiert dann in der Klasse KundenDatabaseRepository. Dort werden dann Queries gebaut oder der OR-Mapper angeworfen. In unseren Domain-Services, wo wir die Repositories verwenden, sind wir dann aber absolut Datenbank-los unterwegs.
-\item[J] Und wo ist Euer Problem?
+\item[N] Wir haben die Schnittstelle, also in unserem Fall das KundenRepository. Irgendwo muss dann natürlich auch mal wirklich eine Datenbank angesprochen werden. Das passiert dann in der Klasse KundenDatabaseRepository. Dort werden dann Queries gebaut oder der OR-Mapper angeworfen. In unseren Domain-Services, wo wir die Repositories verwenden, sind wir dann aber absolut Datenbank-los unterwegs. Zuerst haben wir pro Entity-Klasse ein Repository gebaut. 
+\item[J] Oh - das klingt nicht so clever!
+\end{description}
+}
+
+\note{
+\begin{description}
+\item[N] Dann haben wir aber bald gemerkt (und dummerweise erst danach im Buch gelesen), dass man das nur pro Aggregate macht. Das Repository geht dann von der Wurzel des Aggregate aus und lädt das dann in einem konsistenten Zustand.
+\item[J] Klingt, als ob Ihr das gut im Griff habt. Und wo ist jetzt Euer Problem, von dem Du geredet hast?
 \item[N] Wie strukturieren wir das am Besten? Wir haben hier unseren Domain Service. Der programmiert sauber gegen die Schnittstelle des Repositories. sobald ich aber dann doch die wirkliche Implementierung für die 
 \end{description}
 }
@@ -443,6 +486,15 @@ Wir sind ganz naiv drangegangen und haben uns eine Schnittstelle gebaut, bei der
 \item[J] Ganz genau. Wenn ich mein System so strukturiere, dann stelle ich die Domäne ins Zentrum. Die Interaktion mit außen geschieht über Ports und Adapters. Das zwingt mich dazu, dass ich mir über meine Schnittstelle sehr bewusst bin. Aber das ist ja immer ein gute Idee. In einem ersten Schritt setze ich dann vielleicht einen Rest-Adapter drauf. Wenn dann später die Anforderungen sich ändern und ich eine SOAP-Schnittstelle brauche, weil ein Kunde das nur so bei sich integrieren kann, dann brauche ich nur einen weiteren Adapter. Der ist dann nochmal zu testen.
 \end{description}
 }
+
+
+\note{
+\begin{description}
+\item[N] Und hat diese Art zu strukturieren auch einen Namen. Schichten-Architektur kennt ja jeder...
+\item[J] Es gibt nicht einen einzigen Namen. Üblich sind "Ports and Adapters" oder "Hexagonal Architecture" (wobei das ein seltsamer Name ist, der nur wegen der Visualisierung des inneren Kreises als Sechseck gewählt wurde. Nicht ganz so üblich aber sehr sprechend ist "Onion Architecture".
+\end{description}
+}
+
 
 \note{
 \begin{description}
